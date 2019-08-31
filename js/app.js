@@ -28,9 +28,21 @@ class Player extends Populate {
     this.sprite = "images/char-boy.png";
   }
 
+  openMenu() {
+    var menu = document.getElementById('esc-menu');
+    if (menu.style.visibility === 'visible') {
+      menu.style.visibility = 'hidden';
+    } else {
+      menu.style.visibility = 'visible';
+    }
+  }
+
 //key input for Player
   handleInput (input) {
     switch (input) {
+      case "esc":
+        this.openMenu();
+        break;
       case "left":
         if (this.x >= this.sideways) {
           this.x -= this.sideways;
@@ -100,6 +112,7 @@ allEnemies.push(enemy1, enemy2, enemy3, enemy4);
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener("keyup", function (e) {
   var allowedKeys = {
+    27: "esc",
     37: "left",
     38: "up",
     39: "right",
