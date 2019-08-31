@@ -54,7 +54,7 @@ var Engine = (function(global) {
 	 */
 	function init() {
 		lastTime = Date.now();
-		main();
+		// main();
 	}
 
 	/* This function is called by main (our game loop) and itself calls all
@@ -145,6 +145,10 @@ var Engine = (function(global) {
 		'images/Star.png',
 	]);
 	Resources.onReady(init);
+
+	$('.singlePlayer').click(() => {
+		main();
+	});
 
 	/* Assign the canvas' context object to the global variable (the window
 	 * object when run in a browser) so that developers can use it more easily
