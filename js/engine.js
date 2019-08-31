@@ -13,8 +13,8 @@ var Engine = (function(global) {
 		ctx = canvas.getContext('2d'),
 		lastTime;
 
-	canvas.width = 505;
-	canvas.height = 606;
+	canvas.width = 1212;
+	canvas.height = 1515;
 	doc.body.appendChild(canvas);
 
 	/* This function serves as the kickoff point for the game loop itself
@@ -54,7 +54,7 @@ var Engine = (function(global) {
 	 */
 	function init() {
 		lastTime = Date.now();
-		// main();
+		main();
 	}
 
 	/* This function is called by main (our game loop) and itself calls all
@@ -88,9 +88,15 @@ var Engine = (function(global) {
 				'images/stone-block.png', // Row 3 of 3 of stone
 				'images/grass-block.png', // Row 1 of 2 of grass
 				'images/grass-block.png', // Row 2 of 2 of grass
+				'images/stone-block.png',
+				'images/stone-block.png',
+				'images/stone-block.png',
+				'images/stone-block.png',
+				'images/stone-block.png',
+				'images/grass-block.png',
 			],
-			numRows = 6,
-			numCols = 5,
+			numRows = 12,
+			numCols = 15,
 			row,
 			col;
 
@@ -140,17 +146,9 @@ var Engine = (function(global) {
 	]);
 	Resources.onReady(init);
 
-	$('.singlePlayer').click(function() {
-		console.log('cfxgdxgfx');
-		main();
-	});
-
-	// canvas.hide();
-
 	/* Assign the canvas' context object to the global variable (the window
 	 * object when run in a browser) so that developers can use it more easily
 	 * from within their app.js files.
-	 *
 	 */
 	global.ctx = ctx;
 })(this);
