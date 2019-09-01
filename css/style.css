@@ -19,12 +19,14 @@ body {
 .menu-box ul {
 	padding: 0;
 	list-style: none;
+	border: 1px solid grey;
 }
 .menu-box li {
 	padding: 5px;
 	color: black;
 	font-size: 28px;
 	font-family: sans-serif;
+	text-align: center;
 	background: white;
 }
 .menu-box li:first-child {

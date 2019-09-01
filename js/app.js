@@ -38,8 +38,17 @@ class Player extends Populate {
       menu.style.visibility = 'hidden';
     } else {
       menu.style.visibility = 'visible';
+      var resume = document.getElementById('resume-btn');
+      var quit = document.getElementById('quit-btn');
+      resume.addEventListener('click', () => {
+        menu.style.visibility = 'hidden';
+      });
+      quit.addEventListener('click', () => {
+        canvas = null;
+      })
     }
   }
+
 
 //key input for Player
   handleInput (input) {
