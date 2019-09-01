@@ -35,3 +35,28 @@ body {
 .menu-box li:last-child {
 	padding-bottom: 100px;
 }
+#shop-menu {
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+	width: 100%;
+	height: 100vh;
+	background: white;
+	z-index: 1;
+}
+.shop-container {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+.skins {
+	display: flex;
+	flex-direction: row;
+}
+.char-container {
+	margin: 25px;
+	display: flex;
+	flex-direction: column;
+}

@@ -34,18 +34,31 @@ class Player extends Populate {
 
   openMenu() {
     var menu = document.getElementById('esc-menu');
+    var shopMenu = document.getElementById('shop-menu');
     if (menu.style.visibility === 'visible') {
       menu.style.visibility = 'hidden';
     } else {
       menu.style.visibility = 'visible';
       var resume = document.getElementById('resume-btn');
+      var shop = document.getElementById('shop-btn');
       var quit = document.getElementById('quit-btn');
       resume.addEventListener('click', () => {
         menu.style.visibility = 'hidden';
       });
+      shop.addEventListener('click', () => {
+        menu.style.visibility = 'hidden';
+        shopMenu.style.visibility = 'visible';
+        var cat = document.getElementById('cat');
+        var devil = document.getElementById('devil');
+        var basic = document.getElementById('basic');
+        var crown = document.getElementById('crown');
+        cat.addEventListener('click', () => {
+          shopMenu.style.visibility = 'hidden';
+        });
+      })
       quit.addEventListener('click', () => {
         canvas = null;
-      })
+      });
     }
   }
 
