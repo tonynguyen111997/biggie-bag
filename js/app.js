@@ -11,6 +11,11 @@
 // firebase.initializeApp(firebaseConfig);
 
 //Parent object for sprites
+
+//DOM objects
+const loserMenu = document.getElementById('loserMenuContainer');
+const loserMenuBtn = document.getElementById('loserMenuButton');
+
 class Populate {
 	constructor() {
 		this.x = 0;
@@ -30,6 +35,10 @@ class Populate {
 	reset() {
 		this.x = 505;
 		this.y = 883;
+		loserMenu.style.display = 'none';
+		loserMenuBtn.removeEventListener('click', () => {
+			this.reset();
+		});
 		window.scrollTo(0, this.scrollPosition);
 	}
 }
@@ -53,7 +62,7 @@ class Player extends Populate {
 				}
 				break;
 			case 'right':
-				if (this.x <= this.sideways * 3) {
+				if (this.x <= this.sideways * 10) {
 					this.x += this.sideways;
 				}
 				break;
@@ -75,12 +84,14 @@ class Player extends Populate {
 	}
 
 	//updates player and sets condition for collision & win
-	//I changed to divide by 5 instead of 2
 	update() {
 		for (let enemy of allEnemies) {
-			if (this.y === enemy.y && (enemy.x + enemy.sideways / 5 > this.x && enemy.x < this.x + this.sideways / 5)) {
+			if (this.y === enemy.y && (enemy.x + enemy.sideways / 2 > this.x && enemy.x < this.x + this.sideways / 2)) {
 				this.scrollPosition = 500;
-				this.reset();
+				loserMenu.style.display = 'flex';
+				loserMenuBtn.addEventListener('click', () => {
+					this.reset();
+				});
 			}
 		}
 	}

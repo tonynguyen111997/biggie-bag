@@ -1,3 +1,46 @@
 body {
     text-align: center;
 }
+
+#loserMenuContainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    border: black solid 1px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.loserMenu{
+    height: 450px;
+    width: 400px;
+    border: black solid 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    background: white;
+}
+
+.loserMenu > img{
+    height: 118px;
+    width: 109px;
+}
+
+.loserMenu > button{
+    border: black solid 3px;
+    background: none;
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    margin-top: 50px;
+}
+
+.loserMenu > button:hover{
+    background: black;
+    color: white;
+}
