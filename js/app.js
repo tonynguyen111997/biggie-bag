@@ -1,14 +1,16 @@
-// var firebaseConfig = {
-//   apiKey: 'AIzaSyDcJk9e3uqwwcv3xdb-IBpKI41bNP5N5dA',
-//   authDomain: 'froggergame-6270c.firebaseapp.com',
-//   databaseURL: 'https://froggergame-6270c.firebaseio.com',
-//   projectId: 'froggergame-6270c',
-//   storageBucket: '',
-//   messagingSenderId: '53643201774',
-//   appId: '1:53643201774:web:b1aed74ef074f699'
-// };
-// // Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
+var firebaseConfig = {
+  apiKey: 'AIzaSyDcJk9e3uqwwcv3xdb-IBpKI41bNP5N5dA',
+  authDomain: 'froggergame-6270c.firebaseapp.com',
+  databaseURL: 'https://froggergame-6270c.firebaseio.com',
+  projectId: 'froggergame-6270c',
+  storageBucket: '',
+  messagingSenderId: '53643201774',
+  appId: '1:53643201774:web:b1aed74ef074f699'
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+let database = firebase.database();
 
 //Parent object for sprites
 
@@ -45,59 +47,86 @@ class Populate {
 
 //Player class
 class Player extends Populate {
-	constructor() {
-		super();
-		this.x = 505;
-		this.y = 883;
-		this.sprite = 'images/char-boy.png';
-		this.scrollPosition = 500;
-	}
+  constructor(name, x, model) {
+    super();
+    this.x = x;
+    this.y = 883;
+    this.sprite = model;
+    this.name = name;
+    this.scrollPosition = 500;
+    firebase.database().ref('users/' + this.name).set({
+      name: this.name,
+      positionX: this.x,
+      positionY: this.y,
+    });
+  }
 
-	//key input for Player
-	handleInput(input) {
-		switch (input) {
-			case 'left':
-				if (this.x >= this.sideways) {
-					this.x -= this.sideways;
-				}
-				break;
-			case 'right':
-				if (this.x <= this.sideways * 10) {
-					this.x += this.sideways;
-				}
-				break;
-			case 'up':
-				if (this.y >= 0) {
-					this.y -= this.upDown;
-					this.scrollPosition -= 50;
-					window.scrollTo(0, this.scrollPosition);
-				}
-				break;
-			case 'down':
-				if (this.y <= this.upDown * 10) {
-					this.y += this.upDown;
-					this.scrollPosition += 50;
-					window.scrollTo(0, this.scrollPosition);
-				}
-				break;
-		}
-	}
+  //key input for Player
+  handleInput(input) {
+    switch (input) {
+      case 'left':
+        if (this.x >= this.sideways) {
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
+          this.x -= this.sideways;
+        }
+        break;
+      case "right":
+        if (this.x <= this.sideways * 10) {
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
+          this.x += this.sideways;
+        }
+        break;
+      case 'up':
+        if (this.y >= 0) {
+          this.y -= this.upDown;
+          this.scrollPosition -= 50;
+          window.scrollTo(0, this.scrollPosition);
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
+        }
+        break;
+      case 'down':
+        if (this.y <= this.upDown * 10) {
+          this.y += this.upDown;
+          this.scrollPosition += 50;
+          window.scrollTo(0, this.scrollPosition);
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
+        }
+        break;
+    }
+  }
 
-	//updates player and sets condition for collision & win
-	update() {
-		for (let enemy of allEnemies) {
-			if (this.y === enemy.y && (enemy.x + enemy.sideways / 2 > this.x && enemy.x < this.x + this.sideways / 2)) {
-				this.scrollPosition = 500;
-				loserMenu.style.display = 'flex';
-				loserMenuBtn.addEventListener('click', () => {
-					this.reset();
-				});
-			}
-		}
-	}
+  //updates player and sets condition for collision & win
+  update() {
+    for (let enemy of allEnemies) {
+      if (
+        this.y === enemy.y &&
+        (enemy.x + enemy.sideways / 2 > this.x &&
+          enemy.x < this.x + this.sideways / 2)
+      ) {
+        this.scrollPosition = 500;
+        loserMenu.style.display = "flex";
+        loserMenuBtn.addEventListener("click", () => {
+          this.reset();
+        })
+      }
+    }
+  }
 }
 
-const player = new Player();
+const player1 = new Player("bob", 505, 'images/char-boy.png');
+const player2 = new Player("joe", 101, 'images/char-boy.png');
 
 //Array to hold Enemy objects
 const allEnemies = [];
@@ -184,11 +213,18 @@ document.addEventListener('keyup', function(e) {
     39: 'right',
     40: 'down'
   };
+  var joeKeys = {
+    65: 'left',
+    87: 'up',
+    68: 'right',
+    83: 'down'
+  }
+  // console.log('x', player.x);
+  console.log('y', player1.y);
+  player1.handleInput(allowedKeys[e.keyCode]);
+  player2.handleInput(joeKeys[e.keyCode]);
 
-  player.handleInput(allowedKeys[e.keyCode]);
-  let player1Y = player.y;
-
-  if (player.y == -30) {
+  if (player1.y == -30) {
     alert("You win")
     player.scrollPosition = 500;
     player.reset()
@@ -196,9 +232,13 @@ document.addEventListener('keyup', function(e) {
     $("#score").text("Total score:" +score)
     
   }
-  
-
 });
+
+let player1XPosition = player1.x;
+let player1YPosition = player1.y;
+let player2XPosition;
+let player2YPosition; 
+
 
 //Player score
 let score = 0;

@@ -42,7 +42,7 @@ var Engine = (function(global) {
     /* Use the browser's requestAnimationFrame function to call this
      * function again as soon as the browser is able to draw another frame.
      */
-    if (player.winAStar === true) {
+    if (player1.winAStar === true) {
       modal.style.display = 'block';
       win.cancelAnimationFrame;
     } else {
@@ -73,7 +73,16 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.update(dt);
     });
-    player.update();
+    player1.update();
+    player2.update();
+    firebase.database().ref('/users/' + player1.name).once('value').then(function(snapshot) {
+      player1.x = snapshot.val().positionX;
+      player1.y = snapshot.val().positionY;
+    });
+    firebase.database().ref('/users/' + player2.name).once('value').then(function(snapshot) {
+      player2.x = snapshot.val().positionX;
+      player2.y = snapshot.val().positionY;
+    });
   }
 
   /* This function initially draws the "game level", it will then call
@@ -134,7 +143,8 @@ var Engine = (function(global) {
       enemy.render();
     });
 
-    player.render();
+    player1.render();
+    player2.render();
   }
 
   //Images used in game
