@@ -11,6 +11,11 @@
 // firebase.initializeApp(firebaseConfig);
 
 //Parent object for sprites
+
+//DOM objects
+const loserMenu = document.getElementById("loserMenuContainer");
+const loserMenuBtn = document.getElementById("loserMenuButton");
+
 class Populate {
   constructor() {
     this.x = 0;
@@ -30,6 +35,10 @@ class Populate {
   reset() {
     this.x = 505;
     this.y = 883;
+    loserMenu.style.display = "none";
+    loserMenuBtn.removeEventListener("click", () => {
+      this.reset();
+    })
     window.scrollTo(0, this.scrollPosition);
   }
 }
@@ -52,8 +61,8 @@ class Player extends Populate {
           this.x -= this.sideways;
         }
         break;
-      case 'right':
-        if (this.x <= this.sideways * 3) {
+      case "right":
+        if (this.x <= this.sideways * 10) {
           this.x += this.sideways;
         }
         break;
@@ -83,7 +92,10 @@ class Player extends Populate {
           enemy.x < this.x + this.sideways / 2)
       ) {
         this.scrollPosition = 500;
-        this.reset();
+        loserMenu.style.display = "flex";
+        loserMenuBtn.addEventListener("click", () => {
+          this.reset();
+        })
       }
     }
   }
