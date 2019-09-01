@@ -1,14 +1,16 @@
-// var firebaseConfig = {
-//   apiKey: 'AIzaSyDcJk9e3uqwwcv3xdb-IBpKI41bNP5N5dA',
-//   authDomain: 'froggergame-6270c.firebaseapp.com',
-//   databaseURL: 'https://froggergame-6270c.firebaseio.com',
-//   projectId: 'froggergame-6270c',
-//   storageBucket: '',
-//   messagingSenderId: '53643201774',
-//   appId: '1:53643201774:web:b1aed74ef074f699'
-// };
-// // Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
+var firebaseConfig = {
+  apiKey: 'AIzaSyDcJk9e3uqwwcv3xdb-IBpKI41bNP5N5dA',
+  authDomain: 'froggergame-6270c.firebaseapp.com',
+  databaseURL: 'https://froggergame-6270c.firebaseio.com',
+  projectId: 'froggergame-6270c',
+  storageBucket: '',
+  messagingSenderId: '53643201774',
+  appId: '1:53643201774:web:b1aed74ef074f699'
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+let database = firebase.database();
 
 //Parent object for sprites
 
@@ -45,12 +47,18 @@ class Populate {
 
 //Player class
 class Player extends Populate {
-  constructor() {
+  constructor(name, x, model) {
     super();
-    this.x = 505;
+    this.x = x;
     this.y = 883;
-    this.sprite = 'images/char-boy.png';
+    this.sprite = model;
+    this.name = name;
     this.scrollPosition = 500;
+    firebase.database().ref('users/' + this.name).set({
+      name: this.name,
+      positionX: this.x,
+      positionY: this.y,
+    });
   }
 
   //key input for Player
@@ -58,11 +66,19 @@ class Player extends Populate {
     switch (input) {
       case 'left':
         if (this.x >= this.sideways) {
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
           this.x -= this.sideways;
         }
         break;
       case "right":
         if (this.x <= this.sideways * 10) {
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
           this.x += this.sideways;
         }
         break;
@@ -71,6 +87,10 @@ class Player extends Populate {
           this.y -= this.upDown;
           this.scrollPosition -= 50;
           window.scrollTo(0, this.scrollPosition);
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
         }
         break;
       case 'down':
@@ -78,6 +98,10 @@ class Player extends Populate {
           this.y += this.upDown;
           this.scrollPosition += 50;
           window.scrollTo(0, this.scrollPosition);
+          firebase.database().ref('users/' + this.name).set({
+            positionX: this.x,
+            positionY: this.y,
+          });
         }
         break;
     }
@@ -101,7 +125,8 @@ class Player extends Populate {
   }
 }
 
-const player = new Player();
+const player1 = new Player("bob", 505, 'images/char-boy.png');
+const player2 = new Player("joe", 101, 'images/char-boy.png');
 
 //Array to hold Enemy objects
 const allEnemies = [];
@@ -187,13 +212,20 @@ document.addEventListener('keyup', function(e) {
     39: 'right',
     40: 'down'
   };
+  var joeKeys = {
+    65: 'left',
+    87: 'up',
+    68: 'right',
+    83: 'down'
+  }
   // console.log('x', player.x);
-  console.log('y', player.y);
-  player.handleInput(allowedKeys[e.keyCode]);
+  console.log('y', player1.y);
+  player1.handleInput(allowedKeys[e.keyCode]);
+  player2.handleInput(joeKeys[e.keyCode]);
 });
 
-let player1XPosition = player.x;
-let player1YPosition = player.y;
+let player1XPosition = player1.x;
+let player1YPosition = player1.y;
 let player2XPosition;
 let player2YPosition;
 

@@ -42,7 +42,7 @@ var Engine = (function(global) {
     /* Use the browser's requestAnimationFrame function to call this
      * function again as soon as the browser is able to draw another frame.
      */
-    if (player.winAStar === true) {
+    if (player1.winAStar === true) {
       modal.style.display = 'block';
       win.cancelAnimationFrame;
     } else {
@@ -73,7 +73,8 @@ var Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.update(dt);
     });
-    player.update();
+    player1.update();
+    player2.update();
   }
 
   /* This function initially draws the "game level", it will then call
@@ -134,7 +135,8 @@ var Engine = (function(global) {
       enemy.render();
     });
 
-    player.render();
+    player1.render();
+    player2.render();
   }
 
   //Images used in game
