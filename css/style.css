@@ -44,3 +44,9 @@ body {
     background: black;
     color: white;
 }
+
+#score{
+        position: fixed;
+    right: 3%;
+    bottom: 7%;
+}
