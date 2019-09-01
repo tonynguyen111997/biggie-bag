@@ -142,5 +142,22 @@ document.addEventListener("keyup", function (e) {
     40: "down"
   };
 
+
+  let player1Y = player.y;
+
+  if (player.y == 53) {
+    alert("You win")
+    player.scrollPosition = 500;
+    player.reset()
+    score++;
+    
+  }
   player.handleInput(allowedKeys[e.keyCode]);
 });
+
+//Player score
+let score = 0;
+
+
+
+
