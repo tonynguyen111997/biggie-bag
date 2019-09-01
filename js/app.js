@@ -177,20 +177,32 @@ allEnemies.push(
 
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-	var allowedKeys = {
-		37: 'left',
-		38: 'up',
-		39: 'right',
-		40: 'down',
-	};
-	// console.log('x', player.x);
-	console.log('y', player.y);
-	player.handleInput(allowedKeys[e.keyCode]);
+
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+  };
+
+  player.handleInput(allowedKeys[e.keyCode]);
+  let player1Y = player.y;
+
+  if (player.y == -30) {
+    alert("You win")
+    player.scrollPosition = 500;
+    player.reset()
+    score++;
+    $("#score").text("Total score:" +score)
+    
+  }
+  
+
 });
 
-let player1XPosition = player.x;
-let player1YPosition = player.y;
-let player2XPosition;
-let player2YPosition;
+//Player score
+let score = 0;
 
-sendToFirebase = () => {};
+
+
+
