@@ -48,11 +48,12 @@ class Player extends Populate {
       shop.addEventListener('click', () => {
         menu.style.visibility = 'hidden';
         shopMenu.style.visibility = 'visible';
+        var close = document.getElementById('close-btn');
         var cat = document.getElementById('cat');
         var devil = document.getElementById('devil');
         var basic = document.getElementById('basic');
         var crown = document.getElementById('crown');
-        cat.addEventListener('click', () => {
+        close.addEventListener('click', () => {
           shopMenu.style.visibility = 'hidden';
         });
       })
