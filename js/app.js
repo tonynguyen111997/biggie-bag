@@ -188,17 +188,18 @@ document.addEventListener('keyup', function(e) {
     40: 'down'
   };
 
-
+  player.handleInput(allowedKeys[e.keyCode]);
   let player1Y = player.y;
 
-  if (player.y == 53) {
+  if (player.y == -30) {
     alert("You win")
     player.scrollPosition = 500;
     player.reset()
     score++;
+    $("#score").text("Total score:" +score)
     
   }
-  player.handleInput(allowedKeys[e.keyCode]);
+  
 });
 
 //Player score
