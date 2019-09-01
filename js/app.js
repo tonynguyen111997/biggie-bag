@@ -1,3 +1,15 @@
+// var firebaseConfig = {
+//   apiKey: 'AIzaSyDcJk9e3uqwwcv3xdb-IBpKI41bNP5N5dA',
+//   authDomain: 'froggergame-6270c.firebaseapp.com',
+//   databaseURL: 'https://froggergame-6270c.firebaseio.com',
+//   projectId: 'froggergame-6270c',
+//   storageBucket: '',
+//   messagingSenderId: '53643201774',
+//   appId: '1:53643201774:web:b1aed74ef074f699'
+// };
+// // Initialize Firebase
+// firebase.initializeApp(firebaseConfig);
+
 //Parent object for sprites
 class Populate {
 	constructor() {
@@ -160,6 +172,14 @@ document.addEventListener('keyup', function(e) {
 		39: 'right',
 		40: 'down',
 	};
-
+	// console.log('x', player.x);
+	console.log('y', player.y);
 	player.handleInput(allowedKeys[e.keyCode]);
 });
+
+let player1XPosition = player.x;
+let player1YPosition = player.y;
+let player2XPosition;
+let player2YPosition;
+
+sendToFirebase = () => {};
