@@ -75,6 +75,14 @@ var Engine = (function(global) {
     });
     player1.update();
     player2.update();
+    firebase.database().ref('/users/' + player1.name).once('value').then(function(snapshot) {
+      player1.x = snapshot.val().positionX;
+      player1.y = snapshot.val().positionY;
+    });
+    firebase.database().ref('/users/' + player2.name).once('value').then(function(snapshot) {
+      player2.x = snapshot.val().positionX;
+      player2.y = snapshot.val().positionY;
+    });
   }
 
   /* This function initially draws the "game level", it will then call
