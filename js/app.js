@@ -1,36 +1,57 @@
+// var firebaseConfig = {
+//   apiKey: 'AIzaSyDcJk9e3uqwwcv3xdb-IBpKI41bNP5N5dA',
+//   authDomain: 'froggergame-6270c.firebaseapp.com',
+//   databaseURL: 'https://froggergame-6270c.firebaseio.com',
+//   projectId: 'froggergame-6270c',
+//   storageBucket: '',
+//   messagingSenderId: '53643201774',
+//   appId: '1:53643201774:web:b1aed74ef074f699'
+// };
+// // Initialize Firebase
+// firebase.initializeApp(firebaseConfig);
+
 //Parent object for sprites
+
+//DOM objects
+const loserMenu = document.getElementById('loserMenuContainer');
+const loserMenuBtn = document.getElementById('loserMenuButton');
+
 class Populate {
-  constructor () {
-    this.x = 0;
-    this.y = 0;
-    this.speed = 0;
-    this.sprite = "";
-    this.sideways = 101;
-    this.upDown = 83;
-    this.scrollPosition = 500;
-  }
+	constructor() {
+		this.x = 0;
+		this.y = 0;
+		this.speed = 0;
+		this.sprite = '';
+		this.sideways = 101;
+		this.upDown = 83;
+		this.scrollPosition = 500;
+	}
 
-  render () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    window.scrollTo(0, this.scrollPosition);
-  }
+	render() {
+		ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+		window.scrollTo(0, this.scrollPosition);
+	}
 
-  reset () {
-    this.x = 505;
-    this.y = 883;
-    window.scrollTo(0, this.scrollPosition);
-  }
+	reset() {
+		this.x = 505;
+		this.y = 883;
+		loserMenu.style.display = 'none';
+		loserMenuBtn.removeEventListener('click', () => {
+			this.reset();
+		});
+		window.scrollTo(0, this.scrollPosition);
+	}
 }
 
 //Player class
 class Player extends Populate {
-  constructor () {
-    super();
-    this.x = 505;
-    this.y = 883;
-    this.sprite = "images/char-boy.png";
-    this.scrollPosition = 500;
-  }
+	constructor() {
+		super();
+		this.x = 505;
+		this.y = 883;
+		this.sprite = 'images/char-boy.png';
+		this.scrollPosition = 500;
+	}
 
   openMenu() {
     var menu = document.getElementById('esc-menu');
@@ -63,49 +84,51 @@ class Player extends Populate {
     }
   }
 
-
-//key input for Player
-  handleInput (input) {
-    switch (input) {
+	//key input for Player
+	handleInput(input) {
+		switch (input) {
       case "esc":
         this.openMenu();
         break;
-      case "left":
-        if (this.x >= this.sideways) {
-          this.x -= this.sideways;
-        }
-        break;
-      case "right":
-        if (this.x <= this.sideways * 3) {
-          this.x += this.sideways;
-        }
-        break;
-      case "up":
-        if (this.y >= 0) {
-          this.y -= this.upDown;
-          this.scrollPosition -= 50;
-          window.scrollTo(0 , this.scrollPosition);
-        }
-        break;
-      case "down":
-        if (this.y <= this.upDown * 10) {
-          this.y += this.upDown;
-          this.scrollPosition += 50;
-          window.scrollTo(0 , this.scrollPosition);
-        }
-        break;
-    }
-  }
+			case 'left':
+				if (this.x >= this.sideways) {
+					this.x -= this.sideways;
+				}
+				break;
+			case 'right':
+				if (this.x <= this.sideways * 10) {
+					this.x += this.sideways;
+				}
+				break;
+			case 'up':
+				if (this.y >= 0) {
+					this.y -= this.upDown;
+					this.scrollPosition -= 50;
+					window.scrollTo(0, this.scrollPosition);
+				}
+				break;
+			case 'down':
+				if (this.y <= this.upDown * 10) {
+					this.y += this.upDown;
+					this.scrollPosition += 50;
+					window.scrollTo(0, this.scrollPosition);
+				}
+				break;
+		}
+	}
 
-  //updates player and sets condition for collision & win
-  update () {
-    for (let enemy of allEnemies) {
-      if (this.y === enemy.y && (enemy.x + enemy.sideways / 2 > this.x && enemy.x < this.x + this.sideways / 2)) {
-        this.scrollPosition = 500;
-        this.reset();
-      }
-    }
-  }
+	//updates player and sets condition for collision & win
+	update() {
+		for (let enemy of allEnemies) {
+			if (this.y === enemy.y && (enemy.x + enemy.sideways / 2 > this.x && enemy.x < this.x + this.sideways / 2)) {
+				this.scrollPosition = 500;
+				loserMenu.style.display = 'flex';
+				loserMenuBtn.addEventListener('click', () => {
+					this.reset();
+				});
+			}
+		}
+	}
 }
 
 const player = new Player();
@@ -115,24 +138,24 @@ const allEnemies = [];
 
 //Enemy class
 class Enemy extends Populate {
-  constructor (x, y, speed) {
-    super();
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-    this.sprite = "images/enemy-bug.png";
-    this.enemySprite = this.sprite;
-    this.sideways = 303;
-  }
+	constructor(x, y, speed) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.speed = speed;
+		this.sprite = 'images/enemy-bug.png';
+		this.enemySprite = this.sprite;
+		this.sideways = 303;
+	}
 
-  //Smooth movement of Enemy objects across gameboard
-  update (dt) {
-    if (this.x < this.sideways * 5) {
-      this.x += this.speed * dt;
-    } else {
-      this.x = -100;
-    }
-  }
+	//Smooth movement of Enemy objects across gameboard
+	update(dt) {
+		if (this.x < this.sideways * 5) {
+			this.x += this.speed * dt;
+		} else {
+			this.x = -100;
+		}
+	}
 }
 
 // (starting position, y position, speed)
@@ -165,11 +188,30 @@ const enemyMoreMore7 = new Enemy(210, 717, 300);
 const enemyMoreMore8 = new Enemy(120, 800, 550);
 
 allEnemies.push(
-  enemy1, enemy2, enemy3, enemyMore1, enemyMore2, enemyMore3, enemyMoreMore1, enemyMoreMore2, enemyMoreMore3,
-  enemy4, enemy5, enemy6, enemy7, enemy8, enemyMore4, enemyMore5, enemyMore6, enemyMore7, enemyMore8);
+	enemy1,
+	enemy2,
+	enemy3,
+	enemyMore1,
+	enemyMore2,
+	enemyMore3,
+	enemyMoreMore1,
+	enemyMoreMore2,
+	enemyMoreMore3,
+	enemy4,
+	enemy5,
+	enemy6,
+	enemy7,
+	enemy8,
+	enemyMore4,
+	enemyMore5,
+	enemyMore6,
+	enemyMore7,
+	enemyMore8
+);
 
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener("keyup", function (e) {
+document.addEventListener('keyup', function(e) {
+
   var allowedKeys = {
     27: "esc",
     37: "left",
@@ -179,4 +221,23 @@ document.addEventListener("keyup", function (e) {
   };
 
   player.handleInput(allowedKeys[e.keyCode]);
+  let player1Y = player.y;
+
+  if (player.y == -30) {
+    alert("You win")
+    player.scrollPosition = 500;
+    player.reset()
+    score++;
+    $("#score").text("Total score:" +score)
+    
+  }
+  
+
 });
+
+//Player score
+let score = 0;
+
+
+
+
